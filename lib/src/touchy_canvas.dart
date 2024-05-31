@@ -19,19 +19,18 @@ class TouchyCanvas {
   final Canvas _canvas;
   final Object? panningShapeId;
 
-  late final ShapeHandler _shapeHandler ;
+  late final ShapeHandler _shapeHandler;
 
   ///[TouchyCanvas] helps you add gesture callbacks to the shapes you draw.
   ///
   /// [context] is the BuildContext that is obtained from the [CanvasTouchDetector] widget's builder function.
   /// The parameter [canvas] is the [Canvas] object that you get in your [paint] method inside [CustomPainter]
-  TouchyCanvas(
-    BuildContext context,
-    this._canvas, {ScrollController? scrollController,
+  TouchyCanvas(BuildContext context, this._canvas,
+      {ScrollController? scrollController,
       AxisDirection scrollDirection = AxisDirection.down,
       GestureDragEndCallback? onPanEnd,
       GestureDragCancelCallback? onPanCancel,
-  this.panningShapeId}) {
+      this.panningShapeId}) {
     _shapeHandler = ShapeHandler(panningShapeId);
     var touchController = TouchDetectionController.of(context);
     touchController?.addListener((Gesture gesture) {
@@ -59,7 +58,8 @@ class TouchyCanvas {
     _shapeHandler.addShape(ClipRRectShape(rrect));
   }
 
-  void clipRect(Rect rect, {ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true}) {
+  void clipRect(Rect rect,
+      {ClipOp clipOp = ClipOp.intersect, bool doAntiAlias = true}) {
     _canvas.clipRect(rect, clipOp: clipOp, doAntiAlias: doAntiAlias);
     _shapeHandler.addShape(ClipRectShape(rect, clipOp: clipOp));
   }
@@ -287,7 +287,7 @@ class TouchyCanvas {
   void drawRRect(
     RRect rrect,
     Paint paint, {
-      Object? shapeId,
+    Object? shapeId,
     HitTestBehavior? hitTestBehavior,
     GestureTapDownCallback? onTapDown,
     PaintingStyle? paintStyleForTouch,
@@ -378,6 +378,7 @@ class TouchyCanvas {
   void drawRect(
     Rect rect,
     Paint paint, {
+    Object? shapeId,
     HitTestBehavior? hitTestBehavior,
     GestureTapDownCallback? onTapDown,
     PaintingStyle? paintStyleForTouch,
@@ -417,7 +418,8 @@ class TouchyCanvas {
         )));
   }
 
-  void drawShadow(Path path, Color color, double elevation, bool transparentOccluder) {
+  void drawShadow(
+      Path path, Color color, double elevation, bool transparentOccluder) {
     _canvas.drawShadow(path, color, elevation, transparentOccluder);
     // _shapeHandler.addShape(PathShape(path));
   }
@@ -444,7 +446,9 @@ class TouchyCanvas {
     GestureTapUpCallback? onSecondaryTapUp,
   }) {
     _canvas.drawImage(image, p, paint);
-    _shapeHandler.addShape(Rectangle(Rect.fromLTWH(p.dx, p.dy, image.width.toDouble(), image.height.toDouble()),
+    _shapeHandler.addShape(Rectangle(
+        Rect.fromLTWH(
+            p.dx, p.dy, image.width.toDouble(), image.height.toDouble()),
         paint: paint,
         hitTestBehavior: hitTestBehavior,
         gestureMap: TouchCanvasUtil.getGestureCallbackMap(
